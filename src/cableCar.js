@@ -50,7 +50,10 @@ export default class CableCar {
       );
     };
 
-    this.subscription = this.actionCableProvider.createConsumer(options.wsURL).subscriptions.create(
+    if (!this.cable) {
+      this.cable = this.actionCableProvider.createConsumer(options.wsURL);
+    }
+    this.subscription = this.cable.subscriptions.create(
       cableParams, {
         initialized: this.initialized,
         connected: this.connected,
@@ -105,7 +108,7 @@ export default class CableCar {
     this.subscription.send(action);
   }
 
-  unsubscribe() {
+  unsubscribe(channel) {
     this.subscription.unsubscribe();
     this.disconnected();
   }

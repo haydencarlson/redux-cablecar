@@ -23,6 +23,12 @@ export default class CableCarDispatcher {
   changeCar(oldLine, newLine, options) {
     let car = this.getCar(oldLine);
 
+    let carRoom = JSON.parse(car.subscription.identifier).room;
+
+    if (carRoom === options.params.room) {
+      return;
+    }
+
     if (!car) {
       console.error(new ReferenceError(
         'CableCar Dispatcher (change failed): no car found on line/channel: ' + oldLine
